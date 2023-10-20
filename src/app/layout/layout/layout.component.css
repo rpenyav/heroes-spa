@@ -1,0 +1,15 @@
+.material-toolbar-background {
+  background-color: black;
+  color: #ffffff;
+}
+
+.logotipoxmen {
+  width: auto;
+  height: 40px;
+}
+
+.dark-layout {
+  background-color: rgb(34, 33, 37);
+  color: #ffffff;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

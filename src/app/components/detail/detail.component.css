@@ -1,0 +1,18 @@
+.detail-hero h2 {
+  font-size: 32px;
+}
+.detail-hero h5 {
+  font-size: 20px;
+}
+.detail-hero h6 {
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  font-weight: bold;
+}
+.detail-hero hr {
+  margin: 0px;
+  padding: 0px;
+  margin-top: 6px;
+  margin-bottom: 15px;
+}

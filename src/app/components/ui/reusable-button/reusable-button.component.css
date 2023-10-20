@@ -1,0 +1,12 @@
+.roundedbutton {
+  -webkit-border-radius: 25;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  padding: 0px;
+}
+
+.disabled-button {
+  background-color: #ccc !important;
+  color: #666;
+  cursor: not-allowed;
+}

@@ -1,0 +1,71 @@
+<app-layout
+  ><div class="container">
+    <div class="row mt-5">
+      <div class="col-md-3">
+        <img
+          [src]="superhero?.picture"
+          alt="{{ superhero?.name }}"
+          class="img-fluid"
+        />
+      </div>
+
+      <div class="col-md-9 detail-hero">
+        <h2>{{ superhero?.name }}</h2>
+
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5>
+              Original name: <strong>{{ superhero?.originalname }}</strong>
+            </h5>
+          </div>
+          <div>
+            <app-reusable-button
+              (click)="superhero && copyPageUrlToClipboard()"
+              [buttonPadding]="'4px 0px 0px 0px'"
+              buttonColor="primary"
+              buttonHexColor="#ffcf3d"
+            >
+              <mat-icon>share</mat-icon>
+            </app-reusable-button>
+
+            <app-reusable-button
+              class="ms-2 me-2"
+              (click)="superhero && openEditModal(superhero.id)"
+              [buttonPadding]="'4px 0px 0px 0px'"
+              buttonColor="primary"
+              buttonHexColor="#FF5733"
+            >
+              <mat-icon>edit</mat-icon>
+            </app-reusable-button>
+
+            <app-reusable-button
+              (click)="superhero && openDeleteModal(superhero.id)"
+              [buttonPadding]="'3px 0px 0px 0px'"
+              buttonColor="primary"
+              buttonHexColor="#c40b08"
+            >
+              <mat-icon>delete</mat-icon>
+            </app-reusable-button>
+          </div>
+        </div>
+
+        <hr />
+        <ul>
+          <li>
+            Class: <strong>{{ superhero?.class }}</strong>
+          </li>
+          <li>
+            Strength: <strong>{{ superhero?.strength }}</strong>
+          </li>
+        </ul>
+        <p class="mb-5">{{ superhero?.description }}</p>
+        <h6>Powers</h6>
+        <hr />
+
+        <div class="d-inline" *ngFor="let power of superhero?.powers">
+          <mat-chip class="me-2" selectable="false">{{ power.name }}</mat-chip>
+        </div>
+      </div>
+    </div>
+  </div></app-layout
+>

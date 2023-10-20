@@ -1,0 +1,61 @@
+<div class="card mb-4">
+  <div class="img-hover-container">
+    <div class="title-container mb-2">
+      <h2>{{ superhero?.name }}</h2>
+      <h5>{{ superhero?.originalname }}</h5>
+    </div>
+
+    <div class="img-container">
+      <div *ngIf="!imageLoaded" class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+      <img
+        [src]="superhero.picture"
+        alt="{{ superhero.name }}"
+        class="card-image"
+        (load)="onImageLoad()"
+      />
+    </div>
+
+    <div class="img-hover-description">
+      <p>{{ superhero?.description }}</p>
+
+      <div class="d-flex justify-content-between">
+        <p>Strength: {{ superhero?.strength }}</p>
+        <p>Class: {{ superhero?.class }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center mt-5">
+        <app-reusable-button
+          [buttonPadding]="'5px 0px 0px 0px'"
+          buttonColor="primary"
+          buttonHexColor="#0b6eb5"
+          [routerLink]="['/detail', superhero?.id]"
+        >
+          <mat-icon>visibility</mat-icon>
+        </app-reusable-button>
+
+        <app-reusable-button
+          class="ms-2 me-2"
+          (click)="openEditModal(superhero.id)"
+          [buttonPadding]="'4px 0px 0px 0px'"
+          buttonColor="primary"
+          buttonHexColor="#FF5733"
+          [routerLink]="['/']"
+        >
+          <mat-icon>edit</mat-icon>
+        </app-reusable-button>
+
+        <app-reusable-button
+          (click)="openDeleteModal(superhero.id)"
+          [buttonPadding]="'3px 0px 0px 0px'"
+          buttonColor="primary"
+          buttonHexColor="#c40b08"
+          [routerLink]="['/']"
+        >
+          <mat-icon>delete</mat-icon>
+        </app-reusable-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <!-- <app-loader-spinner [isLoading]="isLoading"></app-loader-spinner> -->
+  <div class="row mt-2 p-3">
+    <div class="col-md-4">
+      <app-add-image (imageSelected)="onImageSelected($event)"></app-add-image>
+    </div>
+    <div class="col-md-8">
+      <form (submit)="createSuperHero()">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            [(ngModel)]="newSuperHero.name"
+            name="name"
+            (input)="capitalizeName($event)"
+          />
+        </div>
+
+        <app-reusable-button
+          class="ms-2"
+          buttonColor="warn"
+          type="submit"
+          [buttonPadding]="'2px 15px 0px 15px'"
+          buttonHexColor="#3dc8ff"
+        >
+          Crear Superhéroe
+        </app-reusable-button>
+
+        <app-reusable-button
+          class="ms-2"
+          buttonColor="warn"
+          [buttonPadding]="'2px 15px 0px 15px'"
+          (click)="cancelCreate()"
+        >
+          Cancelar
+        </app-reusable-button>
+      </form>
+    </div>
+  </div>
+</div>

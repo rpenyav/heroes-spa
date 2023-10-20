@@ -1,0 +1,17 @@
+<div class="image-container">
+  <input
+    type="search"
+    [(ngModel)]="imageUrl"
+    (blur)="onUrlEntered()"
+    placeholder="Enter Image URL"
+  />
+  <div class="image-preview">
+    <img
+      *ngIf="imageUrl"
+      [src]="imageUrl"
+      class="w-100"
+      alt="Superhero Image"
+    />
+    <p *ngIf="!imageUrl">No image</p>
+  </div>
+</div>

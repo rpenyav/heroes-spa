@@ -1,0 +1,10 @@
+<button
+  mat-raised-button
+  [ngStyle]="{ 'background-color': buttonHexColor, padding: buttonPadding }"
+  (click)="handleClick()"
+  [disabled]="disabled"
+  [ngClass]="{ 'disabled-button': disabled }"
+  class="roundedbutton"
+>
+  <ng-content></ng-content>
+</button>

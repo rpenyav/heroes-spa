@@ -1,0 +1,60 @@
+<app-layout
+  ><div class="container">
+    <div class="d-flex justify-content-between mt-5">
+      <app-reusable-button
+        class="mt-2"
+        buttonColor="primary"
+        [buttonPadding]="'0px 30px 0px 30px'"
+        (click)="previousPage()"
+        [disabled]="actualPage === 1"
+      >
+        Anterior
+      </app-reusable-button>
+
+      <div class="w-50">
+        <div class="d-flex justify-content-between">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Filtrar</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="search"
+              (input)="onSearchChange()"
+            />
+
+            <button
+              *ngIf="search"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="search = ''; onSearchChange()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div class="ms-2 pt-3"><mat-icon>search</mat-icon></div>
+        </div>
+      </div>
+
+      <app-reusable-button
+        class="mt-2"
+        buttonColor="primary"
+        (click)="nextPage()"
+        [buttonPadding]="'0px 30px 0px 30px'"
+        [disabled]="actualPage === totalPages"
+      >
+        Siguiente
+      </app-reusable-button>
+    </div>
+
+    <div class="row mt-5">
+      <div
+        class="col-lg-3 col-md-4 col-sm-6"
+        *ngFor="let superhero of superheroes | filter : search"
+      >
+        <app-hero-card [superhero]="superhero"></app-hero-card>
+      </div>
+    </div>
+  </div>
+</app-layout>

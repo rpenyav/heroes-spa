@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <app-loader-spinner [isLoading]="isLoading"></app-loader-spinner>
+  <div class="row mt-2 p-3">
+    <div class="col-md-4">
+      <app-add-image
+        [superheroImage]="superhero?.picture"
+        (imageSelected)="onImageSelected($event)"
+      ></app-add-image>
+    </div>
+    <div class="col-md-8">
+      <h3>{{ superhero?.name }}</h3>
+      <h5>{{ superhero?.originalname }}</h5>
+      <form (ngSubmit)="saveChanges()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            [(ngModel)]="superhero.name"
+            name="name"
+            (input)="capitalizeName($event)"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="originalname" class="form-label">Subtitulo</label>
+          <input
+            type="text"
+            class="form-control"
+            id="originalname"
+            [(ngModel)]="superhero.originalname"
+            name="originalname"
+          />
+        </div>
+        <app-reusable-button type="submit" buttonPadding="0px 15px 0px 15px"
+          >Guardar Cambios</app-reusable-button
+        >
+        <app-reusable-button
+          type="button"
+          buttonPadding="0px 15px 0px 15px"
+          (click)="cancelEdition()"
+          >Cancelar Cambios</app-reusable-button
+        >
+      </form>
+    </div>
+  </div>
+</div>

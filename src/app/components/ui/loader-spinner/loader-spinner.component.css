@@ -1,0 +1,19 @@
+/* custom-spinner.component.css */
+.edit-container {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 98%;
+  height: 98%;
+  z-index: 9999; /* Valor alto para asegurarse de que esté en una capa superior */
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+}
+
+svg {
+  width: 90px; /* Tamaño personalizado del spinner */
+  height: 90px;
+}
