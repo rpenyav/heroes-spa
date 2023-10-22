@@ -110,14 +110,14 @@ ng test
 Construir la imagen Docker
 
 ```
-docker build -t nombre-de-tu-imagen .
+docker build -t heroes-spa .
 ```
 
 
 Correr el contenedor: 
 
 ```
-docker run -p 8080:80 nombre-de-tu-imagen
+docker run -p 8080:80 heroes-spa
 ```
 
 Acceder a la aplicación en http://localhost:8080/.
@@ -125,5 +125,5 @@ Acceder a la aplicación en http://localhost:8080/.
 
 
 ## Contacto
-Para cualquier pregunta o comentario, no dudes en ponerte en contacto con nosotros en [rafa@rafapenya.com](mailto:rafa@rafapenya.com).
+Para cualquier pregunta o comentario, no dudes en ponerte en contacto en [rafa@rafapenya.com](mailto:rafa@rafapenya.com).
 
