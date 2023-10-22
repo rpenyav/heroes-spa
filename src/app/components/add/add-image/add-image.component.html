@@ -1,17 +1,27 @@
 <div class="image-container">
+  <label htmlFor="">Imagen:</label>
   <input
     type="search"
+    class="form-control mt-2"
+    [ngClass]="{ 'transparent-text': imageUrl === 'assets/no-image-big.jpg' }"
     [(ngModel)]="imageUrl"
+    (click)="imageUrl = ''"
     (blur)="onUrlEntered()"
     placeholder="Enter Image URL"
   />
+
   <div class="image-preview">
+    <p class="small mt-2">
+      Insert an https:// URI from Cloudinary or another image server
+    </p>
     <img
       *ngIf="imageUrl"
       [src]="imageUrl"
       class="w-100"
       alt="Superhero Image"
     />
-    <p *ngIf="!imageUrl">No image</p>
+    <p class="mt-3 text-center" *ngIf="!imageUrl">
+      <img src="assets/no-image.png" class="w-100" alt="no image" />
+    </p>
   </div>
 </div>

@@ -40,4 +40,8 @@ export class HeroCardComponent {
   onImageLoad() {
     this.imageLoaded = true;
   }
+
+  onImageError() {
+    this.superhero.picture = 'assets/no-image-big.jpg';
+  }
 }

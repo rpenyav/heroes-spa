@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { XMenCharacter } from '../../model/characters';
 import { SuperHeroesService } from '../../services/super-heroes.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -13,17 +14,27 @@ export class ListComponent implements OnInit {
   totalPages: number;
   search: string = '';
 
+  unsubscribe$: Subject<void> = new Subject<void>();
+
   constructor(private superHeroesService: SuperHeroesService) {
     this.totalPages = this.superHeroesService.getTotalPages();
   }
 
   ngOnInit(): void {
+    this.totalPages = this.superHeroesService.getTotalPages();
     this.loadData();
-    this.superHeroesService.dataUpdated$.subscribe((updated) => {
-      if (updated) {
-        this.loadData();
-      }
-    });
+    this.superHeroesService.dataUpdated$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((updated) => {
+        if (updated) {
+          this.loadData();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   onSearchChange(): void {

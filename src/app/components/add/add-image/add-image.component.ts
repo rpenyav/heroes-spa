@@ -7,13 +7,11 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 })
 export class AddImageComponent implements OnInit {
   @Input() imageUrl: string | null = null;
-  @Input() superheroImage: string | null = null; // Agregar esta línea
+  @Input() superheroImage: string | null = null;
   @Output() imageSelected = new EventEmitter<string>();
 
   ngOnInit() {
-    // Verifica si imageUrl no está informada y superheroImage tiene un valor
     if (!this.imageUrl && this.superheroImage) {
-      // Asigna el valor de superheroImage a imageUrl
       this.imageUrl = this.superheroImage;
     }
 
@@ -21,9 +19,6 @@ export class AddImageComponent implements OnInit {
   }
 
   onUrlEntered() {
-    // Validar que la URL es válida si es necesario
-    // Por ejemplo, puedes verificar si la URL contiene "http://" o "https://"
-    // También puedes agregar otras validaciones según tus requisitos
     if (this.imageUrl) {
       this.imageSelected.emit(this.imageUrl);
     }

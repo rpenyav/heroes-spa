@@ -14,6 +14,7 @@
         alt="{{ superhero.name }}"
         class="card-image"
         (load)="onImageLoad()"
+        (error)="onImageError()"
       />
     </div>
 

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuperHeroesService } from '../../services/super-heroes.service';
 import { XMenCharacter } from '../../model/characters';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditComponent } from '../edit/edit.component';
 import { DeleteComponent } from '../delete/delete.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,7 +38,7 @@ export class DetailComponent {
     });
   }
 
-  openEditModal(superheroId: number) {
+  openEditModal(superheroId: number): MatDialogRef<EditComponent> {
     this.superHeroesService.setSelectedSuperHeroId(superheroId);
 
     const dialogRef = this.dialog.open(EditComponent, {
@@ -46,7 +46,10 @@ export class DetailComponent {
       height: '600px',
       disableClose: true,
     });
+
     dialogRef.componentInstance.modifyFromDetail = true;
+
+    return dialogRef;
   }
 
   openDeleteModal(superheroId: number) {

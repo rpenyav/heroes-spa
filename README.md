@@ -69,7 +69,7 @@ Divide los datos en páginas y proporciona una estructura paginada.
 
 ## Accessibility
 
-Se han añadido métodos y etiquetas que cumplen las pautas **WCAG 2.1**
+Se han añadido métodos y etiquetas que cumplen las pautas **WCAG 2.1** y botones de ampliación de texto en el footer.
 
 ## Instalación y Uso
 
@@ -105,10 +105,25 @@ Prácticamente la mayoría de componentes disponen de su propio test de renderiz
 ng test
 ```
 
+## Docker
 
-## Licencia
-Este proyecto se distribuye bajo la licencia MIT.
+Construir la imagen Docker
 
-### Contacto
+```
+docker build -t nombre-de-tu-imagen .
+```
+
+
+Correr el contenedor: 
+
+```
+docker run -p 8080:80 nombre-de-tu-imagen
+```
+
+Acceder a la aplicación en http://localhost:8080/.
+
+
+
+## Contacto
 Para cualquier pregunta o comentario, no dudes en ponerte en contacto con nosotros en [rafa@rafapenya.com](mailto:rafa@rafapenya.com).
 

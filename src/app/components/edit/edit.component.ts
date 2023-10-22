@@ -12,12 +12,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./edit.component.css'],
 })
 export class EditComponent implements OnInit, OnDestroy {
-  private superHeroSubscription: Subscription | null = null;
+  public superHeroSubscription: Subscription | null = null;
   public superhero: any;
   public superheroImage: string | undefined;
 
+  newPower: any = {
+    name: '',
+    description: '',
+  };
+
+  powers: any[] = [];
+
   modifyFromDetail = false;
   public isLoading: boolean = false;
+  public isValidForm: boolean = false;
 
   constructor(
     private superHeroesService: SuperHeroesService,
@@ -29,9 +37,10 @@ export class EditComponent implements OnInit, OnDestroy {
     this.superHeroSubscription =
       this.superHeroesService.selectedSuperHeroId$.subscribe((id) => {
         if (id !== null) {
-          const { picture } = this.superHeroesService.getHeroeById(id);
-          this.superheroImage = picture;
-          this.superhero = this.superHeroesService.getHeroeById(id);
+          const hero = this.superHeroesService.getHeroeById(id);
+          this.superhero = hero;
+          this.powers = hero.powers || [];
+          this.validateForm();
         }
       });
   }
@@ -42,15 +51,30 @@ export class EditComponent implements OnInit, OnDestroy {
     }
   }
 
-  capitalizeName(event: any) {
+  validateForm() {
+    this.isValidForm =
+      this.superhero.name &&
+      this.superhero.originalname &&
+      this.superhero.strength &&
+      this.superhero.class &&
+      this.superhero.description
+        ? true
+        : false;
+  }
+
+  capitalizeField(event: any, field: string) {
     const value = event.target.value;
-    this.superhero.name = value.charAt(0).toUpperCase() + value.slice(1);
+    this.superhero[field] = value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   cancelEdition() {
     if (this.modifyFromDetail) {
       window.location.reload();
     }
+
+    this.powers = [];
+    this.superHeroesService.clearPowers();
+
     this.modifyFromDetail = false;
     this.dialogRef.close();
   }
@@ -63,7 +87,11 @@ export class EditComponent implements OnInit, OnDestroy {
     if (this.superhero) {
       this.isLoading = true;
 
-      const updatedHero = { ...this.superhero };
+      const updatedHero = {
+        ...this.superhero,
+        powers: this.powers,
+      };
+
       this.superHeroesService.updateHeroeById(updatedHero.id, updatedHero);
 
       if (this.superheroImage) {
@@ -86,6 +114,26 @@ export class EditComponent implements OnInit, OnDestroy {
         }
         this.dialogRef.close();
       }, 1000);
+    }
+  }
+
+  addPower() {
+    this.powers.push({ ...this.newPower });
+    this.newPower = {
+      name: '',
+      description: '',
+    };
+    this.superHeroesService.savePowers(this.powers);
+    this.superHeroesService.loadPowers().subscribe((powers) => {
+      this.powers = powers;
+    });
+  }
+
+  removePower(power: any) {
+    const index = this.powers.indexOf(power);
+    if (index >= 0) {
+      this.powers.splice(index, 1);
+      this.superHeroesService.savePowers(this.powers);
     }
   }
 }

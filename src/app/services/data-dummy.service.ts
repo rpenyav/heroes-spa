@@ -462,8 +462,8 @@ export class DataDummyService implements InMemoryDbService {
   }
 
   updateAllData(newData: any[]) {
-    this.elements = newData;
-    localStorage.setItem('elements', JSON.stringify(newData));
+    this.elements = newData.sort((a, b) => b.id - a.id);
+    localStorage.setItem('elements', JSON.stringify(this.elements));
   }
 
   updateHero(id: number, updatedHero: any) {

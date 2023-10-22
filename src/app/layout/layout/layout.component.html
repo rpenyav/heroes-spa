@@ -42,13 +42,19 @@
         class="material-toolbar-background text-center mt-5 mb-5 pt-5 pb-5"
       >
         <div class="d-flex justify-content-center">
+          <div>Tamaño del texto</div>
           <div>
-            <button (click)="maxTextSize()">Aumentar Texto</button>
+            <button class="botonfoot sizeup" (click)="maxTextSize()">A</button>
 
-            <button (click)="minTextSize()">Disminuir Texto</button>
+            <button class="botonfoot" (click)="minTextSize()">A</button>
           </div>
 
-          <div>rafa@rafapenya.com - https://github.com/rpenyav/heroes-spa</div>
+          <div class="ms-4 foot">
+            <a href="mailto:rafa@rafapenya.com">rafa@rafapenya.com</a> -
+            <a href="https://github.com/rpenyav/heroes-spa"
+              >https://github.com/rpenyav/heroes-spa</a
+            >
+          </div>
         </div>
       </footer>
     </div>

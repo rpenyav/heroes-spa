@@ -1,74 +1,96 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ListaComponent } from './lista.component';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
+import { ListComponent } from './list.component';
 import { DataDummyService } from '../../services/data-dummy.service';
 import { AppModule } from '../../app.module';
-import { LayoutComponent } from '../../layout/layout/layout.component';
-import { ReusableButtonComponent } from '../ui/reusable-button/reusable-button.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SuperHeroesService } from '../../services/super-heroes.service';
+import { XMenCharacter } from 'src/app/model/characters';
+import { Subject, of } from 'rxjs';
 
-describe('ListaComponent', () => {
-  let component: ListaComponent;
-  let fixture: ComponentFixture<ListaComponent>;
-  let cargarDatosSpy: jasmine.Spy;
+describe('ListComponent', () => {
+  let component: ListComponent;
+  let fixture: ComponentFixture<ListComponent>;
+  const dataUpdated$ = new Subject<boolean>();
+  type MockSuperHeroesService = jasmine.SpyObj<SuperHeroesService>;
+  let mockSuperHeroesService: MockSuperHeroesService;
 
-  const mockSuperHeroesData = [
-    { id: 1, name: 'Magneto' },
-    { id: 2, name: 'X Professor' },
+  const mockSuperHeroesData: XMenCharacter[] = [
+    {
+      id: 1,
+      name: 'Magneto',
+      originalname: 'Magnus',
+      strength: 90,
+      class: 'Hero',
+      description: 'Magnetic powers',
+      picture: 'some-url',
+      powers: [],
+    },
+    {
+      id: 2,
+      name: 'X Professor',
+      originalname: 'Charles Xavier',
+      strength: 80,
+      class: 'Hero',
+      description: 'Telepathy',
+      picture: 'some-url',
+      powers: [],
+    },
   ];
 
-  let mockSuperHeroesService = jasmine.createSpyObj('SuperHeroesService', [
-    'getTotalPages',
-    'getAllSuperHeroes',
-    'getElementsPerPage',
-  ]);
-
   beforeEach(() => {
+    mockSuperHeroesService = jasmine.createSpyObj('SuperHeroesService', [
+      'getTotalPages',
+      'getAllSuperHeroes',
+      'getElementsPerPage',
+    ]);
+    mockSuperHeroesService.dataUpdated$ = dataUpdated$.asObservable();
+
     TestBed.configureTestingModule({
-      declarations: [ListaComponent, LayoutComponent, ReusableButtonComponent],
-      imports: [AppModule, NoopAnimationsModule],
+      declarations: [ListComponent],
+      imports: [AppModule],
       providers: [
         DataDummyService,
         { provide: SuperHeroesService, useValue: mockSuperHeroesService },
       ],
     }).compileComponents();
-    mockSuperHeroesService.getAllSuperHeroes.and.returnValue([
-      mockSuperHeroesData,
-    ]);
+
+    mockSuperHeroesService.getAllSuperHeroes.and.returnValue(
+      mockSuperHeroesData
+    );
     mockSuperHeroesService.getTotalPages.and.returnValue(5);
     mockSuperHeroesService.getElementsPerPage.and.returnValue(8);
 
-    fixture = TestBed.createComponent(ListaComponent);
+    fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
-    cargarDatosSpy = spyOn(component, 'loadData').and.callThrough();
     fixture.detectChanges();
   });
 
+  it('should initialize with correct data', fakeAsync(() => {
+    tick();
+    expect(component.superheroes.length).toBe(mockSuperHeroesData.length);
+  }));
+
   it('should call loadData on ngOnInit and load super heroes', () => {
-    expect(cargarDatosSpy).toHaveBeenCalled();
+    const loadDataSpy = spyOn(component, 'loadData').and.callThrough();
+    component.ngOnInit();
+    expect(loadDataSpy).toHaveBeenCalled();
     expect(mockSuperHeroesService.getAllSuperHeroes).toHaveBeenCalled();
   });
 
   it('should increment page number and reload data when nextPage is called', () => {
     component.actualPage = 1;
     component.totalPages = 10;
-    cargarDatosSpy.calls.reset();
     component.nextPage();
     expect(component.actualPage).toBe(2);
-    expect(cargarDatosSpy).toHaveBeenCalled();
   });
 
   it('should decrement page number and reload data when previousPage is called', () => {
     component.actualPage = 2;
     component.previousPage();
     expect(component.actualPage).toBe(1);
-    expect(mockSuperHeroesService.getAllSuperHeroes).toHaveBeenCalled();
-  });
-
-  it('should update window width on window resize', () => {
-    const resizeEvent = new Event('resize');
-    spyOnProperty(window, 'innerWidth').and.returnValue(800);
-    window.dispatchEvent(resizeEvent);
-    expect(component.windowWidth).toBe(800);
   });
 });

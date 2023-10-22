@@ -10,38 +10,126 @@
     <div class="col-md-8">
       <h3>{{ superhero?.name }}</h3>
       <h5>{{ superhero?.originalname }}</h5>
-      <form (ngSubmit)="saveChanges()">
-        <div class="mb-3">
-          <label for="name" class="form-label">Nombre</label>
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          [(ngModel)]="superhero.name"
+          name="name"
+          (input)="capitalizeField($event, 'name'); validateForm()"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="originalname" class="form-label">Subtitulo</label>
+        <input
+          type="text"
+          class="form-control"
+          id="originalname"
+          [(ngModel)]="superhero.originalname"
+          name="originalname"
+          (input)="capitalizeField($event, 'originalname'); validateForm()"
+        />
+      </div>
+
+      <div class="mb-3 d-flex justify-content-start">
+        <div>
+          <label for="strength" class="form-label">Strength*:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="strength"
+            [(ngModel)]="superhero.strength"
+            name="strength"
+            (input)="validateForm()"
+          />
+        </div>
+
+        <div class="ms-4">
+          <label for="class" class="form-label">Class*:</label>
           <input
             type="text"
             class="form-control"
-            id="name"
-            [(ngModel)]="superhero.name"
-            name="name"
-            (input)="capitalizeName($event)"
+            id="class"
+            [(ngModel)]="superhero.class"
+            name="class"
+            (input)="capitalizeField($event, 'class'); validateForm()"
           />
         </div>
-        <div class="mb-3">
-          <label for="originalname" class="form-label">Subtitulo</label>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description*:</label>
+        <textarea
+          class="form-control"
+          id="description"
+          [(ngModel)]="superhero.description"
+          name="description"
+          (input)="validateForm()"
+        ></textarea>
+      </div>
+
+      <mat-chip
+        class="me-2"
+        *ngFor="let power of powers"
+        removable="true"
+        (removed)="removePower(power)"
+      >
+        {{ power.name }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+
+      <div class="mb-3 d-flex justify-content-start align-items-center">
+        <div>
+          <label for="powerName" class="form-label">Power Name:</label>
           <input
             type="text"
             class="form-control"
-            id="originalname"
-            [(ngModel)]="superhero.originalname"
-            name="originalname"
+            id="powerName"
+            [(ngModel)]="newPower.name"
+            name="powerName"
           />
         </div>
-        <app-reusable-button type="submit" buttonPadding="0px 15px 0px 15px"
-          >Guardar Cambios</app-reusable-button
-        >
-        <app-reusable-button
-          type="button"
-          buttonPadding="0px 15px 0px 15px"
-          (click)="cancelEdition()"
-          >Cancelar Cambios</app-reusable-button
-        >
-      </form>
+        <div class="ms-2 me-2">
+          <label for="powerDescription" class="form-label"
+            >Power Description:</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="powerDescription"
+            [(ngModel)]="newPower.description"
+            name="powerDescription"
+          />
+        </div>
+        <div class="mt-3">
+          <app-reusable-button
+            aria-label="Add Power"
+            class="ms-2"
+            buttonColor="warn"
+            [buttonPadding]="'2px 15px 0px 15px'"
+            (click)="addPower()"
+          >
+            Add Power
+          </app-reusable-button>
+        </div>
+      </div>
+
+      <app-reusable-button
+        (click)="saveChanges()"
+        buttonPadding="0px 15px 0px 15px"
+        [disabled]="!isValidForm"
+        >Guardar Cambios</app-reusable-button
+      >
+      <app-reusable-button
+        class="ms-2"
+        type="button"
+        buttonPadding="0px 15px 0px 15px"
+        (click)="cancelEdition()"
+        >Cancelar Cambios</app-reusable-button
+      >
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataDummyService } from './data-dummy.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { generateUniqueId } from '../helpers/generate-unique-id';
 
 @Injectable({
@@ -29,6 +29,7 @@ export class SuperHeroesService {
 
   getAllSuperHeroes(): any[] {
     let allData = this.dataService.getAllData();
+    allData = allData.sort((a, b) => a.id - b.id);
     return allData.reverse();
   }
 
@@ -36,6 +37,20 @@ export class SuperHeroesService {
     let allData = this.dataService.getAllData();
     let heroe = allData.find((hero) => hero.id === id);
     return heroe;
+  }
+
+  savePowers(powers: any[]) {
+    localStorage.setItem('powers', JSON.stringify(powers));
+  }
+
+  loadPowers(): Observable<any[]> {
+    const powersStr = localStorage.getItem('powers');
+    const powers = powersStr ? JSON.parse(powersStr) : [];
+    return of(powers);
+  }
+
+  clearPowers() {
+    localStorage.removeItem('powers');
   }
 
   setSelectedSuperHeroId(id: number | null) {
@@ -50,7 +65,7 @@ export class SuperHeroesService {
     newHero.id = generateUniqueId();
 
     const allData = this.dataService.getAllData();
-    allData.push(newHero);
+    allData.unshift(newHero);
 
     this.updateAllData(allData);
     this.dataUpdatedSource.next(true);
