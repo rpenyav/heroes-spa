@@ -51,6 +51,7 @@ describe('AddComponent', () => {
       description: '',
     });
     expect(component.isValidForm).toBeFalse();
+    expect(mockSuperHeroesService.loadPowers).toHaveBeenCalled();
   });
 
   it('should validate form correctly', () => {
@@ -74,6 +75,20 @@ describe('AddComponent', () => {
     expect(component.isValidForm).toBeTrue();
   });
 
+  it('should invalidate form correctly', () => {
+    component.newSuperHero = {
+      id: '1',
+      originalname: 'Peter Parker',
+      strength: '90',
+      class: 'Hero',
+      description: 'Web slinger',
+      picture: 'some-url',
+      powers: [],
+    };
+    component.validateForm();
+    expect(component.isValidForm).toBeFalse();
+  });
+
   it('should add new power correctly', () => {
     const newPower: Power = { name: 'Web Slinging', description: 'Shoot webs' };
     component.newPower = newPower;
@@ -83,6 +98,7 @@ describe('AddComponent', () => {
     expect(component.powers[0]).toEqual(newPower);
     expect(mockSuperHeroesService.savePowers).toHaveBeenCalledWith([newPower]);
     expect(component.newPower).toEqual({ name: '', description: '' });
+    expect(mockSuperHeroesService.loadPowers).toHaveBeenCalled();
   });
 
   it('should remove power correctly', () => {
@@ -95,5 +111,45 @@ describe('AddComponent', () => {
     component.removePower(powerToRemove);
     expect(component.powers).toEqual([]);
     expect(mockSuperHeroesService.savePowers).toHaveBeenCalledWith([]);
+    expect(mockSuperHeroesService.savePowers).toHaveBeenCalledWith([]);
+  });
+
+  it('should capitalize the field correctly', () => {
+    const event = { target: { value: 'peter' } };
+    component.capitalizeField(event, 'name');
+    expect(component.newSuperHero.name).toBe('Peter');
+  });
+
+  it('should set image URL correctly', () => {
+    const imageUrl = 'http://example.com/image.jpg';
+    component.onImageSelected(imageUrl);
+    expect(component.newSuperHero.picture).toBe(imageUrl);
+  });
+
+  it('should cancel creation and clear fields', () => {
+    component.powers = [
+      { name: 'Test Power', description: 'Test Description' },
+    ];
+    component.cancelCreate();
+    expect(component.powers).toEqual([]);
+    expect(mockSuperHeroesService.clearPowers).toHaveBeenCalled();
+    expect(mockMatDialogRef.close).toHaveBeenCalled();
+  });
+
+  it('should create a new super hero', () => {
+    component.newSuperHero = {
+      name: 'Peter',
+      originalname: 'Peter Parker',
+      strength: 90,
+      class: 'Hero',
+      description: 'Web slinger',
+    };
+    component.powers = [{ name: 'Web slinging', description: 'Shoot webs' }];
+    component.createSuperHero();
+    expect(mockSuperHeroesService.addSuperheroe).toHaveBeenCalledWith(
+      component.newSuperHero
+    );
+    expect(mockSuperHeroesService.savePowers).toHaveBeenCalledWith([]);
+    expect(mockMatDialogRef.close).toHaveBeenCalled();
   });
 });

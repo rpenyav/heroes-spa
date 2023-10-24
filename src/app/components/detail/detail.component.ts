@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DetailComponent {
   superheroId: number | null = null;
   superhero: XMenCharacter | null = null;
+  imageLoaded: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,12 +29,20 @@ export class DetailComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('id');
+      const idNumber = Number(idParam); // Convertir el parámetro a número
 
-      if (idParam === null) {
-        this.router.navigate(['/404']);
+      if (idParam === null || isNaN(idNumber)) {
+        this.router.navigate(['/404']); // O podrías usar '**' si quieres
       } else {
-        this.superheroId = +idParam;
-        this.superhero = this.superHeroesService.getHeroeById(this.superheroId);
+        const hero = this.superHeroesService.getHeroeById(idNumber);
+
+        console.log('hero', hero);
+        if (hero === null || hero === undefined) {
+          this.router.navigate(['/404']);
+        } else {
+          this.superheroId = idNumber;
+          this.superhero = hero;
+        }
       }
     });
   }
@@ -81,6 +90,18 @@ export class DetailComponent {
       console.error('Could not copy to clipboard: ', err);
     } finally {
       document.body.removeChild(textArea);
+    }
+  }
+
+  onImageLoad() {
+    this.imageLoaded = true;
+  }
+
+  onImageError() {
+    if (this.superhero) {
+      this.superhero.picture = 'assets/no-image-big.jpg';
+    } else {
+      console.error('Superhero object is null');
     }
   }
 }

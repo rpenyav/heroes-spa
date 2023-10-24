@@ -16,3 +16,8 @@
   margin-top: 6px;
   margin-bottom: 15px;
 }
+.detail-hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}

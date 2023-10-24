@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DataDummyService } from './data-dummy.service';
 import { SuperHeroesService } from './super-heroes.service';
 import { XMenCharacter } from '../model/characters';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('SuperHeroesService', () => {
   let service: SuperHeroesService;
@@ -18,6 +19,12 @@ describe('SuperHeroesService', () => {
       providers: [
         { provide: DataDummyService, useValue: mockDataDummyService },
         SuperHeroesService,
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {},
+          },
+        },
       ],
     });
 

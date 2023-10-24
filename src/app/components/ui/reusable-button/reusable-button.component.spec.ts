@@ -23,27 +23,42 @@ describe('ReusableButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should not navigate when disabled', () => {
+  it('should not navigate or emit when disabled', () => {
     component.disabled = true;
     fixture.detectChanges();
 
     const navigateSpy = spyOn(router, 'navigate');
+    const clickSpy = spyOn(component.onClick, 'emit');
+
     component.handleClick();
+
     expect(navigateSpy).not.toHaveBeenCalled();
+    expect(clickSpy).not.toHaveBeenCalled();
   });
 
-  it('should emit onClick event when clicked', () => {
+  it('should emit onClick event when clicked and not disabled', () => {
     const clickSpy = spyOn(component.onClick, 'emit');
     component.handleClick();
     expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('should navigate when routerLink is provided', () => {
+  it('should navigate when routerLink is a string', () => {
     component.routerLink = '/some-route';
     fixture.detectChanges();
 
     const navigateSpy = spyOn(router, 'navigate');
     component.handleClick();
+
     expect(navigateSpy).toHaveBeenCalledWith(['/some-route']);
+  });
+
+  it('should navigate when routerLink is an array', () => {
+    component.routerLink = ['/some-route', 'sub-route'];
+    fixture.detectChanges();
+
+    const navigateSpy = spyOn(router, 'navigate');
+    component.handleClick();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/some-route', 'sub-route']);
   });
 });

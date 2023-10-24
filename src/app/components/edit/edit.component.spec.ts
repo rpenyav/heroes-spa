@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { EditComponent } from './edit.component';
 import { SuperHeroesService } from '../../services/super-heroes.service';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
@@ -53,11 +58,18 @@ describe('EditComponent', () => {
             loadPowers: () => {},
           },
         },
-        { provide: MatDialogRef, useValue: {} },
+        //     { provide: MatDialogRef, useValue: {} },
+
         {
           provide: MatSnackBar,
           useValue: {
             open: () => {},
+          },
+        },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {},
           },
         },
       ],
@@ -126,5 +138,48 @@ describe('EditComponent', () => {
     );
   });
 
- 
+  it('should cancel edition', () => {
+    const spy = spyOn(dialogRef, 'close');
+    component.cancelEdition();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should set image URL when onImageSelected is called', () => {
+    const url = 'http://example.com/image.jpg';
+    component.onImageSelected(url);
+    expect(component.superheroImage).toEqual(url);
+  });
+
+  it('should remove existing power', () => {
+    const power = { name: 'Fly', description: 'Can fly' };
+    component.powers = [power];
+    component.removePower(power);
+    expect(component.powers).not.toContain(power);
+  });
+
+  it('should set isLoading to true then false when saveChanges is called', fakeAsync(() => {
+    component.superhero = { ...dummyHero };
+    component.powers = [...dummyHero.powers];
+    component.saveChanges();
+    expect(component.isLoading).toBeTrue();
+    tick(1000);
+    expect(component.isLoading).toBeFalse();
+  }));
+
+  it('should add new power', () => {
+    const loadPowersSpy = spyOn(
+      superHeroesService,
+      'loadPowers'
+    ).and.returnValue(of([]));
+    const savePowersSpy = spyOn(superHeroesService, 'savePowers');
+
+    component.newPower = { name: 'New Power', description: 'New description' };
+    component.addPower();
+
+    expect(loadPowersSpy).toHaveBeenCalled();
+    expect(savePowersSpy).toHaveBeenCalledWith([
+      { name: 'Rapid Healing', description: 'Heal rapidly from injuries' },
+      { name: 'New Power', description: 'New description' },
+    ]);
+  });
 });

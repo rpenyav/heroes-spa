@@ -1,12 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { DataDummyService } from './data-dummy.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('DataDummyService', () => {
   let service: DataDummyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DataDummyService],
+      providers: [
+        DataDummyService,
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {},
+          },
+        },
+      ],
     });
     service = TestBed.inject(DataDummyService);
 

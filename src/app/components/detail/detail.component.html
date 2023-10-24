@@ -2,11 +2,18 @@
   ><div class="container">
     <div class="row mt-5">
       <div class="col-md-3">
-        <img
-          [src]="superhero?.picture"
-          alt="{{ superhero?.name }}"
-          class="img-fluid"
-        />
+        <div class="img-container">
+          <div *ngIf="!imageLoaded" class="spinner-container">
+            <div class="spinner"></div>
+          </div>
+          <img
+            [src]="superhero?.picture"
+            alt="{{ superhero?.name }}"
+            class="detail-hero-image"
+            (load)="onImageLoad()"
+            (error)="onImageError()"
+          />
+        </div>
       </div>
 
       <div class="col-md-9 detail-hero">
