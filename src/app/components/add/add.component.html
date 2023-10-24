@@ -123,7 +123,7 @@
         [buttonPadding]="'2px 15px 0px 15px'"
         buttonHexColor="#3dc8ff"
         [disabled]="!isValidForm"
-        (click)="createSuperHero()"
+        (click)="isValidForm && createSuperHero()"
       >
         Create Hero
       </app-reusable-button>

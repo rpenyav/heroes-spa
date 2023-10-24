@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DataDummyService } from './data-dummy.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { generateUniqueId } from '../helpers/generate-unique-id';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class SuperHeroesService {
   dataUpdated$ = this.dataUpdatedSource.asObservable();
 
   constructor(private dataService: DataDummyService) {}
-
+  router = inject(Router);
   getTotalPages(): number {
     return this.dataService.getTotalPages();
   }
@@ -105,6 +106,7 @@ export class SuperHeroesService {
     if (index !== -1) {
       allData.splice(index, 1);
       this.updateAllData(allData);
+      this.router.navigate(['/']);
       return true;
     }
     return false;

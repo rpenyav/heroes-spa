@@ -58,7 +58,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.isLoading = false;
           if (this.deleteFromDetail) {
-            this.router.navigate(['/lista']);
+            this.router.navigate(['/list']);
           }
 
           this.dialogRef.close();

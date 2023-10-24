@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },
   { path: 'list', component: ListComponent },
   { path: 'detail/:id', component: DetailComponent },
-  { path: '404', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

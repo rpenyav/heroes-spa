@@ -1,0 +1,16 @@
+.notfound h1 {
+  font-size: 92px;
+  color: #ffffff;
+}
+
+p {
+  color: #ffffff;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+a:hover {
+  text-decoration: none;
+}
